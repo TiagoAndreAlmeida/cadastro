@@ -1,0 +1,1 @@
+export const api = 'https://cdc-react.herokuapp.com/api/autores';
