@@ -1,27 +1,9 @@
 {
   "user": [
     {
-      "id": 1,
-      "name": "tiago",
-      "email": "t@t",
-      "password": "123"
-    },
-    {
-      "id": 2,
-      "name": "tiago",
-      "email": "a@a",
-      "password": "123"
-    },
-    {
       "id": 3,
       "name": "teste",
       "email": "teste@teste",
-      "password": "123"
-    },
-    {
-      "id": 4,
-      "name": "aluno",
-      "email": "aluno@aluno",
       "password": "123"
     },
     {

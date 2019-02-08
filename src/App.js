@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import CustomInput from './components/customInput'
+import CustomInput from './components/customInput';
+import CustomButton from './components/customButton';
 import {API} from './utils.js';
 import './css/pure-min.css';
 import './css/side-menu.css';
@@ -20,7 +21,6 @@ class App extends Component {
     this.setName = this.setName.bind(this);
     this.setEmail = this.setEmail.bind(this);
     this.setPassword = this.setPassword.bind(this);
-    this.delete = this.delete.bind(this);
     this.loadData = this.loadData.bind(this);
   }
 
@@ -58,13 +58,13 @@ class App extends Component {
   }
 
   async delete (id) {
-    console.log(id.value)
-    // try{
-    //   await axios.delete('http://localhost:8000/user/'+id, )
-    // }
-    // catch(error){
-    //   console.log(error)
-    // }
+    try{
+      await axios.delete('http://localhost:8000/user/'+id, )
+      this.loadData();
+    }
+    catch(error){
+      console.log(error)
+    }
   }
 
   setName (event) {
@@ -96,7 +96,6 @@ class App extends Component {
                 <li className="pure-menu-item"><a href="#" className="pure-menu-link">Home</a></li>
                 <li className="pure-menu-item"><a href="#" className="pure-menu-link">Autor</a></li>
                 <li className="pure-menu-item"><a href="#" className="pure-menu-link">Livro</a></li>
-
             </ul>
         </div>
     </div>
@@ -111,12 +110,8 @@ class App extends Component {
                   <CustomInput id="nome" type="text" name="name" value={this.state.name} onChange={this.setName} label="nome"/>
                   <CustomInput id="email" type="email" name="email" value={this.state.email} onChange={this.setEmail} label="email"/>
                   <CustomInput id="password" type="password" name="password" value={this.state.password} onChange={this.setPassword} label="senha"/>
-                  <div className="pure-control-group">                                  
-                    <label></label> 
-                    <button type="submit" className="pure-button pure-button-primary">Gravar</button>                                    
-                  </div>
-                </form>             
-
+                  <CustomButton label="gravar"/>
+                </form>
               </div>  
               <div>            
                 <table className="pure-table">
@@ -133,7 +128,7 @@ class App extends Component {
                       <tr key={item.id}>
                         <td>{item.name}</td>                
                         <td>{item.email}</td>
-                        <td><button className="pure-button" onClick= {this.delete} >excluir</button></td>                
+                        <td><button id={item.id} className="pure-button" onClick= { () => this.delete(item.id)} >excluir</button></td>                
                       </tr>
                       )
                     })}
