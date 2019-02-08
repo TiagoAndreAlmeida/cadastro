@@ -1,1 +1,1 @@
-export const api = 'https://cdc-react.herokuapp.com/api/autores';
+export const API = 'https://cdc-react.herokuapp.com/api/autores';

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import CustomInput from './components/customInput'
+import {API} from './utils.js';
 import './css/pure-min.css';
 import './css/side-menu.css';
 
@@ -9,11 +11,24 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      list: []
+      list: [],
+      name: '',
+      email: '',
+      password: ''
     }
+    this.sendData = this.sendData.bind(this);
+    this.setName = this.setName.bind(this);
+    this.setEmail = this.setEmail.bind(this);
+    this.setPassword = this.setPassword.bind(this);
+    this.delete = this.delete.bind(this);
+    this.loadData = this.loadData.bind(this);
   }
 
-  async componentDidMount () {
+  componentDidMount () {
+    this.loadData()
+  }
+
+  async loadData () {
     try{
       const response = await axios.get('http://localhost:8000/user');
       this.setState({
@@ -23,6 +38,45 @@ class App extends Component {
     catch(error){
       console.log(error);
     }
+  }
+
+  async sendData (event) {
+    event.preventDefault();
+    console.log(event)
+    try {
+      await axios.post('http://localhost:8000/user', {
+        id: this.state.list.length+1,
+        name: this.state.name,
+        email: this.state.email,
+        password: this.state.password
+      })
+      this.loadData();
+    }
+    catch(error){
+      console.error(error)
+    }
+  }
+
+  async delete (id) {
+    console.log(id.value)
+    // try{
+    //   await axios.delete('http://localhost:8000/user/'+id, )
+    // }
+    // catch(error){
+    //   console.log(error)
+    // }
+  }
+
+  setName (event) {
+    this.setState({name: event.target.value})
+  }
+
+  setEmail (event) {
+    this.setState({email: event.target.value})
+  }
+
+  setPassword (event) {
+    this.setState({password: event.target.value})
   }
 
   render() {
@@ -43,7 +97,6 @@ class App extends Component {
                 <li className="pure-menu-item"><a href="#" className="pure-menu-link">Autor</a></li>
                 <li className="pure-menu-item"><a href="#" className="pure-menu-link">Livro</a></li>
 
-
             </ul>
         </div>
     </div>
@@ -54,19 +107,10 @@ class App extends Component {
             </div>
             <div className="content" id="content">
               <div className="pure-form pure-form-aligned">
-                <form className="pure-form pure-form-aligned">
-                  <div className="pure-control-group">
-                    <label htmlFor="nome">Nome</label> 
-                    <input id="nome" type="text" name="nome" value=""  />                  
-                  </div>
-                  <div className="pure-control-group">
-                    <label htmlFor="email">Email</label> 
-                    <input id="email" type="email" name="email" value=""  />                  
-                  </div>
-                  <div className="pure-control-group">
-                    <label htmlFor="senha">Senha</label> 
-                    <input id="senha" type="password" name="senha"  />                                      
-                  </div>
+                <form className="pure-form pure-form-aligned" onSubmit={this.sendData} method="post">
+                  <CustomInput id="nome" type="text" name="name" value={this.state.name} onChange={this.setName} label="nome"/>
+                  <CustomInput id="email" type="email" name="email" value={this.state.email} onChange={this.setEmail} label="email"/>
+                  <CustomInput id="password" type="password" name="password" value={this.state.password} onChange={this.setPassword} label="senha"/>
                   <div className="pure-control-group">                                  
                     <label></label> 
                     <button type="submit" className="pure-button pure-button-primary">Gravar</button>                                    
@@ -80,14 +124,16 @@ class App extends Component {
                     <tr>
                       <th>Nome</th>
                       <th>email</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
                     {this.state.list.map( (item) => {
                       return (
                       <tr key={item.id}>
-                        <td>{item.nome}</td>                
-                        <td>{item.email}</td>                
+                        <td>{item.name}</td>                
+                        <td>{item.email}</td>
+                        <td><button className="pure-button" onClick= {this.delete} >excluir</button></td>                
                       </tr>
                       )
                     })}
@@ -96,8 +142,6 @@ class App extends Component {
               </div>             
             </div>
           </div>            
-
-
     </div> 
     );
   }
