@@ -24,7 +24,6 @@ class FormAuth extends Component {
     componentDidMount () {
         PubSub.subscribe('list', (top, data) => {
             this.setState({ list: data})
-            console.log(data)
         })
     }
 
@@ -84,7 +83,6 @@ class ListAuth extends Component {
     componentDidMount () {
         PubSub.subscribe('update', (top, data) => {
             this.setState({update: data})
-            console.log(data)
         })
     }
 
@@ -98,8 +96,7 @@ class ListAuth extends Component {
         }
     }
 
-    async loadData () {
-        console.log("chamado")
+    async loadData () { 
         try{
           const response = await axios.get('http://localhost:8000/user');
           this.setState({
